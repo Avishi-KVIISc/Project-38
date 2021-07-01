@@ -37,33 +37,33 @@ function preload(){
 }
 
 function setup() {
-  canvas = createCanvas(displayWidth-20, displayHeight-20);
+  canvas = createCanvas(displayWidth-20, displayHeight/2);
 
   //var message = "This is a message";
  //console.log(message)
   
-  trex = createSprite(50,160,20,50);
+  trex = createSprite(50,displayHeight/2 - 200, 20, 50);
   trex.addAnimation("running", trex_running);
   trex.addAnimation("collided", trex_collided);
   
 
   trex.scale = 0.5;
   
-  ground = createSprite(displayWidth/3, displayHeight - 50, 1000, 20);
+  ground = createSprite(displayWidth/2, displayHeight/2 - 50, displayWidth + 40, 20);
   ground.addImage("ground",groundImage);
   ground.x = ground.width /2;
   
-  gameOver = createSprite(displayWidth/2, displayHeight/2 - 80);
+  gameOver = createSprite(displayWidth/2, displayHeight/2 - 150);
   gameOver.addImage(gameOverImg);
   
-  restart = createSprite(displayWidth/2, displayHeight/2);
+  restart = createSprite(displayWidth/2, displayHeight/2 - 100);
   restart.addImage(restartImg);
   
  
   //gameOver.scale = 0.5;
   //restart.scale = 0.5;
   
-  invisibleGround = createSprite(displayWidth/3,displayHeight - 40, 1000,10);
+  invisibleGround = createSprite(displayWidth/2,displayHeight/2 - 40, displayWidth, 10);
   invisibleGround.visible = false;
   
   //create Obstacle and Cloud Groups
@@ -98,12 +98,12 @@ function draw() {
        checkPointSound.play() 
     }
     
+    if (ground.x < 350){
       ground.x = ground.width/2;
-    if (ground.x < 0){
     }
     
     //jump when the space key is pressed
-    if(keyDown("space")&& trex.y >= displayHeight - 80) {
+    if(keyDown("space")&& trex.y >= displayHeight/2 - 80) {
         trex.velocityY = -15;
         jumpSound.play();
     }
@@ -152,6 +152,11 @@ function draw() {
   //stop trex from falling down
   trex.collide(invisibleGround);
 
+  camera.position.x = displayWidth/2;
+  camera.position.y = trex.y;
+
+  console.log(trex.y);
+
   drawSprites();
 }
 
@@ -167,7 +172,7 @@ function reset(){
 
 function spawnObstacles(){
  if (frameCount % 140 === 0){
-   var obstacle = createSprite(displayWidth-40, displayHeight-60, 10, 40);
+   var obstacle = createSprite(displayWidth-40, displayHeight/2-60, 10, 40);
    obstacle.velocityX = -(6 + score/100);
    
     //generate random obstacles
